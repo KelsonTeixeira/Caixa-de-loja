@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS `Socialmovies`.`Usuario` (
   `Nome` VARCHAR(50) NOT NULL,
   `Username` VARCHAR(25) NULL,
   `Senha` VARCHAR(32) NULL,
+  `FotoUsuário` VARCHAR(100) NULL,
   PRIMARY KEY (`idUsuario`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
