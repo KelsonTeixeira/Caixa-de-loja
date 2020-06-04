@@ -42,10 +42,37 @@
           </button>
         </form>
         
-        <div class="link">
+        <div class="buttons">
+          <i class="fas fa-user-friends" id="solicitacao"></i>
           <a href="./login/logoff.php">
             <i class="fas fa-toggle-on"></i>
           </a>
+        </div>
+        <div class="solicitacao">
+          <?php  
+
+            $userId = $User['idUsuario'];
+
+            $solicitacoes = $connection -> query("SELECT Usuario.Nome,
+            Usuario.FotoUsuario, Usuario.idUsuario,
+            SolicitacaoAmizade.idSolicitacaoAmizade FROM Usuario
+            JOIN SolicitacaoAmizade WHERE
+            Usuario.idUsuario = SolicitacaoAmizade.idSolicitante
+            and SolicitacaoAmizade.idSolicitado = '$userId';")
+          ?>
+
+          <?php while($solicitacao = $solicitacoes->fetch_assoc()): ?>
+            <article id='solicitacao-bloco'>
+              <img src="<?php echo $solicitacao['FotoUsuario'] ?>" alt="foto_perfil">
+              <a href="./amigo/?id=<?php echo $solicitacao['idUsuario'] ?>">
+                <strong><?php echo $solicitacao['Nome'] ?></strong>
+              </a>
+              <a class="aceita"
+                href="./process/solicitado.php?solicitacao=<? echo $solicitacao['idSolicitacaoAmizade']?>&usuario=<?php echo $solicitacao['idUsuario'] ?>">
+                  Aceitar
+              </a>
+            </article>
+          <?php endwhile ?>
         </div>
       </div>
         
@@ -62,8 +89,6 @@
           <h2>Amigos</h2>
           <div class="display">
           <?php 
-
-            $userId = $User['idUsuario'];
 
             $friends = $connection -> query("SELECT DISTINCT Usuario.FotoUsuario,
             Usuario.Nome, Usuario.idUsuario FROM Usuario join Amizade on 
@@ -92,5 +117,6 @@
       </div>
     </div>
     
+    <script src="./script/script.js"></script>
   </body>
 </html>
