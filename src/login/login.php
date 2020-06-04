@@ -5,7 +5,7 @@
   $Username = $_POST['username'];
   $Password = $_POST['password'];
 
-  $result = $connection -> query("SELECT idUsuario, Username, Nome FROM Usuario WHERE Username = '$Username' and Senha = MD5('$Password')");
+  $result = $connection -> query("SELECT idUsuario, Username, Nome, FotoUsuario FROM Usuario WHERE Username = '$Username' and Senha = MD5('$Password')");
 
   $User = $result -> fetch_assoc();
 
