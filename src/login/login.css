@@ -95,6 +95,7 @@ body{
   background-color: #674EBD;
   color: #fff;
   text-transform: uppercase;
+  letter-spacing: 1px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
