@@ -3,7 +3,7 @@
   function url($fileName){
     $ssl = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 
           'https://' : 'http://';
-    $imageUrl = $ssl. $_SERVER['SERVER_NAME']. "/images/$fileName";
+    $imageUrl = $ssl. $_SERVER['SERVER_NAME']. "/Rede-Social-de-Filmes-e-Series/src/img/$fileName";
     return $imageUrl;
   }
   
