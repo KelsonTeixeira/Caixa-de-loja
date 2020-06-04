@@ -23,7 +23,7 @@
         </div>
       </div>
 
-      <form class="registro-form" action="login.php" method="post">
+      <form class="registro-form" action="registro.php" method="post" enctype="multipart/form-data">
         <label for="name">Seu nome</label>
         <input type="text" name="name" id="name" required>
 
