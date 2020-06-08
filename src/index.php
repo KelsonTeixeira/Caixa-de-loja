@@ -1,7 +1,4 @@
 <?php
-
-use function PHPSTORM_META\type;
-
 session_start();
   if(!$_SESSION['logged']){
     header('location: ./login/');
@@ -9,6 +6,7 @@ session_start();
   }else{
     $User = $_SESSION['User'];
     include './database/connect.php';
+    include './database/query.php';
   }
 
 ?>
@@ -24,7 +22,7 @@ session_start();
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/general.css">
     <link rel="shortcut icon" href="./img/CLAQUETE.png" type="image/x-icon">
-    <title>RSFS - Login</title>
+    <title>RSFS</title>
   </head>
   <body>
     <div class="app">
@@ -52,17 +50,10 @@ session_start();
           </a>
         </div>
         <div class="solicitacao">
-          <?php  
+          
+          <?php $userId = $User['idUsuario'] ?>
 
-            $userId = $User['idUsuario'];
-
-            $solicitacoes = $connection -> query("SELECT Usuario.Nome,
-            Usuario.FotoUsuario, Usuario.idUsuario,
-            SolicitacaoAmizade.idSolicitacaoAmizade FROM Usuario
-            JOIN SolicitacaoAmizade WHERE
-            Usuario.idUsuario = SolicitacaoAmizade.idSolicitante
-            and SolicitacaoAmizade.idSolicitado = '$userId';")
-          ?>
+          <?php $solicitacoes = friendshipRequestList($userId, $connection) ?>
 
           <?php while($solicitacao = $solicitacoes->fetch_assoc()): ?>
             <article id='solicitacao-bloco'>
@@ -81,9 +72,11 @@ session_start();
         
       <div class="user">
         <img src="<?php echo $User['FotoUsuario'] ?>" alt="foto-perfil">
-        <h1><?php echo $User['Nome'] ?></h1>
+        <a href="./">
+          <h1><?php echo $User['Nome'] ?></h1>
+        </a>
         <h2><?php echo $User['Username'] ?></h2>
-        <a href="./?meustitulos=true">Meus Títulos</a>
+        <a href="./?meustitulos=true">Minhas Opiniões</a>
         
       </div>
 
@@ -95,10 +88,11 @@ session_start();
           <?php $search = $_GET['search'] ?>
 
           <?php if($type == 'usuario'): ?>
-            <?php
-              $usuarios = $connection -> query("SELECT Nome, idUsuario,
-              FotoUsuario FROM Usuario WHERE Nome like '%$search%'");
-            ?>
+
+            <h2>Usuários Encontrados:</h2>
+
+            <?php $usuarios = userSearchList($search, $connection) ?>
+
             <?php while($usuario = $usuarios->fetch_assoc()): ?>
               <article class="usuario">
                 <img src="<?php echo $usuario['FotoUsuario']?>" alt="foto_perfil">
@@ -117,50 +111,9 @@ session_start();
             <?php endwhile ?>
 
           <?php elseif($type == 'titulo'): ?>
-            <script>
-              const feed = document.querySelector('.feed');
-              var search = "<?php echo $search ?>";
-
-              fetch(`http://www.omdbapi.com/?apikey=700c6c7d&s=${search}`)
-              .then(response => response.json())
-              .then(response => {
-                console.log(response);
-                if(response.Response == 'True'){
-                  response.Search.map(titulo => {
-                    let link = document.createElement('a');
-                    let img = document.createElement('img');
-                    let span = document.createElement('span');
-                    let strong = document.createElement('strong');
-                    let text = document.createElement('p');
-
-                    text.textContent = `Ano: ${titulo.Year}`;
-                    strong.textContent = titulo.Title;
-                    img.src = (titulo.Poster != 'N/A') ? titulo.Poster : './img/dog_eat.jpg';
-                    img.alt = 'Poster';
-                    link.href = `./?titulo=${titulo.imdbID}`;
-                    link.classList.add("titulos");
-
-                    span.appendChild(strong);
-                    span.appendChild(text);
-                    link.appendChild(img);
-                    link.appendChild(span);
-                    feed.appendChild(link);
-                  });
-                }else{
-                  let strong = document.createElement('strong');
-
-                  if(response.Error == 'Movie not found!'){
-                    strong.textContent = "Nenhum resultado Encontrado";
-                  }else if(response.Error == 'Too many results.'){
-                    strong.textContent = "Muitos resultados encontrados, seja mais específico";
-                  }else{
-                    strong.textContent = response.Error;
-                  }
-                  
-                  feed.appendChild(strong);
-                }
-              });
-            </script>            
+            <h2>Títulos Encontrados:</h2>
+            <script src="./script/titulo_search.js"></script>
+            <script> titleSearchList("<?php echo $search ?>")</script>            
           <?php endif ?>
 
         <?php elseif(isset($_GET['titulo'])): ?>
@@ -227,7 +180,100 @@ session_start();
             <button type="submit">Enviar</button>
 
           </form>
+          <div class="all-opinions">
+            <?php 
+              $idTitulo = $Titulo['idTitulo'];
+              $allOpinions = allOpinions($idTitulo, $connection);
+            ?>
+            <?php while($opinion = $allOpinions->fetch_assoc()): ?>
+              <div class="user-opinion">
+                <img src="<?php echo $opinion['FotoUsuario'] ?>" alt="foto_usuario">
+                <div class="user-opinion-info">
+                  <strong>
+                    <?php echo $opinion['Nome'] ?>
+                    <span>
+                      <?php 
+                        $up = '<i class="fas fa-thumbs-up"></i>';
+                        $down = '<i class="fas fa-thumbs-down"></i>';
+                        echo ($opinion['Gostou'] ? $up : $down); 
+                      ?>
+                    </span>
+                  </strong>
+                  <p><?php echo $opinion['Opiniao'] ?></p>
+                </div>
+              </div>
+            <?php endwhile ?>
+          </div>
+        <?php elseif(isset($_GET['meustitulos'])): ?>
+          <div class="all-opinions">
+            <h2>Minhas Opiniões</h2>
+            <?php 
+              $idUsuario = $_SESSION['User']['idUsuario'];
+              $myOpinions = myOpinions($idUsuario, $connection);
+            ?>
+            <?php while($myOpinion = $myOpinions->fetch_assoc()): ?>
+              <div class="user-opinion">
+                <img src="<?php echo $myOpinion['Poster'] ?>" alt="poster">
+                <div class="user-opinion-info">
+                  <a href="./?titulo=<?php echo $myOpinion['idImdb'] ?>">
+                    <strong>
+                      <?php echo $myOpinion['Titulo'] ?>
+                      <span>
+                        <?php 
+                          $up = '<i class="fas fa-thumbs-up"></i>';
+                          $down = '<i class="fas fa-thumbs-down"></i>';
+                          echo ($myOpinion['Gostou'] ? $up : $down); 
+                        ?>
+                      </span>
+                    </strong>
+                  </a>
+                  <p><?php echo $myOpinion['Opiniao'] ?></p>
+                </div>
+              </div>
+            <?php endwhile ?>
+          </div>
         <?php else: ?>
+          <div class="all-opinions">
+            <h2>O que seus amigos estão dizendo</h2>
+            <?php 
+              $idUsuario = $_SESSION['User']['idUsuario'];
+              $friendsOpinions = friendsOpinions($idUsuario, $connection);
+            ?>
+            <?php while($friendOpinion = $friendsOpinions->fetch_assoc()): ?>
+              <div class="friend-opinion">
+                <img 
+                  src="<?php echo $friendOpinion['FotoUsuario'] ?>" 
+                  alt="foto_perfil"
+                  class="user-photo">
+                <div class="friend-opinion-info">
+                  <strong> <?php echo $friendOpinion['Nome'] ?> </strong>
+                  <a href="./?titulo=<?php echo $friendOpinion['idImdb'] ?>">
+                    <p>
+                      <span>Assistiu: </span>
+                      <?php echo $friendOpinion['Titulo'] ?>
+                    </p>
+                  </a>                    
+                  
+                  <p>
+                    <span>Opinião: </span>
+                    <?php echo $friendOpinion['Opiniao'] ?>
+                  </p>
+                </div>
+                <div class="poster">
+                  <span>
+                    <?php 
+                      $up = '<i class="fas fa-thumbs-up"></i>';
+                      $down = '<i class="fas fa-thumbs-down"></i>';
+                      echo ($friendOpinion['Gostou'] ? $up : $down); 
+                    ?>
+                  </span>
+                  <a href="./?titulo=<?php echo $friendOpinion['idImdb'] ?>">
+                    <img src="<?php echo $friendOpinion['Poster'] ?>" alt="poster">
+                  </a>
+                </div>
+              </div>
+            <?php endwhile ?>
+          </div>
         <?php endif ?>
       </div>
 
@@ -235,16 +281,9 @@ session_start();
         <div class="friend">
           <h2>Amigos</h2>
           <div class="display">
-          <?php 
 
-            $friends = $connection -> query("SELECT DISTINCT Usuario.FotoUsuario,
-            Usuario.Nome, Usuario.idUsuario FROM Usuario join Amizade on 
-            Usuario.idUsuario = Amizade.idAmigoUm or 
-            Usuario.idUsuario = Amizade.idAmigoDois Where 
-            (Amizade.idAmigoUm = '$userId' 
-            or Amizade.idAmigoDois = '$userId') and Usuario.idUsuario != '$userId'") 
+          <?php $friends = friendsList($userId, $connection); ?>
 
-          ?>
           <?php while($friend = $friends -> fetch_assoc()): ?>
             
             <article>

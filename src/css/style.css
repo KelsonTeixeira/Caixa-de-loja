@@ -181,7 +181,6 @@ body{
 
 .user a{
   color: #353b48;
-  text-decoration: underline;
   cursor: pointer;
 }
 
@@ -205,6 +204,17 @@ body{
   border-right: 1px solid #dadada;
   overflow-y: scroll;
   padding: 50px;
+}
+
+.feed h2{
+  font-size: 16px;
+  font-weight: 600;
+  color: #353b48;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  word-spacing: 2px;
+  margin-bottom: 30px;
 }
 
 .feed .usuario{
@@ -325,6 +335,8 @@ body{
   font-weight: 600;
 }
 
+/*      SET OPINION FORM      */
+
 .feed .assisti{
   width: 100%;
   height: 25px;
@@ -352,6 +364,7 @@ body{
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   overflow: hidden;
+  margin-bottom: 30px;
   transition: all 0.5s;
 }
 
@@ -403,6 +416,127 @@ body{
   cursor: pointer;
   float: right;
   transition: all 0.3s;
+}
+
+/*      USER OPINIONS     */
+
+.feed .user-opinion{
+  height: fit-content;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2fr 8fr;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #674EBD;
+}
+
+.feed .user-opinion img{
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.feed .user-opinion .user-opinion-info{
+  height: 100%;
+  padding: 30px;
+}
+
+.feed .user-opinion .user-opinion-info strong{
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  word-spacing: 2px;
+  color: #353b48;
+}
+
+.feed .user-opinion .user-opinion-info strong span{
+  font-size: 18px;
+  margin-left: 20px;
+  color: #674EBD;
+  float: right;
+}
+
+.feed .user-opinion .user-opinion-info p{
+  font-size: 14px;
+  font-weight: 400;
+  text-align: justify;
+  letter-spacing: 1px;
+  word-spacing: 2px;
+  color: #353b48;
+  margin-top: 20px;
+}
+
+/*    Friend Opinion    */
+
+.feed .friend-opinion{
+  height: fit-content;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 15fr 70fr 15fr;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #674EBD;
+}
+
+.feed .friend-opinion .user-photo{
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.feed .friend-opinion .friend-opinion-info{
+  height: 100%;
+  padding: 30px;
+}
+
+.feed .friend-opinion .friend-opinion-info strong{
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  word-spacing: 2px;
+  color: #353b48;
+}
+
+.feed .friend-opinion .friend-opinion-info strong span{
+  font-size: 18px;
+  margin-left: 20px;
+  color: #674EBD;
+  float: right;
+}
+
+.feed .friend-opinion .friend-opinion-info p{
+  font-size: 14px;
+  font-weight: 400;
+  text-align: justify;
+  letter-spacing: 1px;
+  word-spacing: 2px;
+  color: #353b48;
+  margin-top: 20px;
+}
+
+.feed .friend-opinion .friend-opinion-info p span{
+  font-weight: 600;
+}
+
+.feed .friend-opinion .poster{
+  display: grid;
+  grid-template-rows: 2fr 9fr;
+  row-gap: 20px;
+}
+
+.feed .friend-opinion .poster span{
+  font-size: 18px;
+  color: #674EBD;
+  text-align: center;
+}
+
+.feed .friend-opinion .poster img{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 5px;
 }
 
 /*      Friends and sugstions div     */

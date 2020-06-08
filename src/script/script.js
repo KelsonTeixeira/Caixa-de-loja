@@ -16,7 +16,7 @@ solicitacao.addEventListener('click', () => {
 const num_solicitacao = document.querySelectorAll('#solicitacao-bloco');
 
 if(num_solicitacao.length > 0){
-  solicitacao.style.textShadow = "0px 0px 10px #23F0C7";
+  solicitacao.style.textShadow = "0px 0px 20px #23F0C7";
 }
 
 ///////////////////////////////////////////////////////////////////////////

@@ -5,6 +5,7 @@
     exit();
   }else{
     include '../database/connect.php';
+    include '../database/query.php';
     $id = $_GET['id'];
     $result = $connection -> query("SELECT Nome, Username, FotoUsuario,
     idUsuario FROM Usuario WHERE idUsuario = '$id'");
@@ -67,23 +68,40 @@
       </div>
 
       <div class="feed">
-        
+        <div class="all-opinions">
+          <h2>Opiniões do usuário</h2>
+          <?php 
+            $idUsuario = $id;
+            $friendOpinions = myOpinions($idUsuario, $connection);
+          ?>
+          <?php while($friendOpinion = $friendOpinions->fetch_assoc()): ?>
+            <div class="user-opinion">
+              <img src="<?php echo $friendOpinion['Poster'] ?>" alt="poster">
+              <div class="user-opinion-info">
+                <a href="../?titulo=<?php echo $friendOpinion['idImdb'] ?>">
+                  <strong>
+                    <?php echo $friendOpinion['Titulo'] ?>
+                    <span>
+                      <?php 
+                        $up = '<i class="fas fa-thumbs-up"></i>';
+                        $down = '<i class="fas fa-thumbs-down"></i>';
+                        echo ($friendOpinion['Gostou'] ? $up : $down); 
+                      ?>
+                    </span>
+                  </strong>
+                </a>
+                <p><?php echo $friendOpinion['Opiniao'] ?></p>
+              </div>
+            </div>
+          <?php endwhile ?>
+        </div>
       </div>
 
       <div class="friend-sugestions">
         <div class="friend">
           <h2>Amigos</h2>
           <div class="display">
-          <?php 
-            
-            $friends = $connection -> query("SELECT DISTINCT Usuario.FotoUsuario,
-            Usuario.Nome, Usuario.idUsuario FROM Usuario join Amizade on 
-            Usuario.idUsuario = Amizade.idAmigoUm or 
-            Usuario.idUsuario = Amizade.idAmigoDois Where 
-            (Amizade.idAmigoUm = '$id' 
-            or Amizade.idAmigoDois = '$id') and Usuario.idUsuario != '$id'") 
-
-          ?>
+          <?php $friends = friendsList($id, $connection) ?>
           <?php while($friend = $friends -> fetch_assoc()): ?>
             
             <article>
@@ -98,7 +116,7 @@
           
         </div>
         <div class="sugestions">
-          <h2>Sugestões</h2>
+          <h2></h2>
         </div>
       </div>
     </div>
