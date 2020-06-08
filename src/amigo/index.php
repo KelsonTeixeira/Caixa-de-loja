@@ -36,7 +36,7 @@
           <h1>RSFS</h1>
         </a>
 
-        <form action="./" method="get" class="search">
+        <form action="../" method="get" class="search">
           <input type="text" name="search" id="search">
           <select name="type" id="type">
             <option value="titulo">Título</option>
@@ -47,33 +47,41 @@
           </button>
         </form>
         
-        <div class="link">
+        <div class="buttons">
           <a href="../login/logoff.php">
             <i class="fas fa-toggle-on"></i>
           </a>
         </div>
+
       </div>
         
       <div class="user">
         <img src="<?php echo $User['FotoUsuario'] ?>" alt="foto-perfil">
         <h1><?php echo $User['Nome'] ?></h1>
-        <h2><?php echo $User['Username'] ?></h2>        
+        <h2><?php echo $User['Username'] ?></h2> 
+        <a 
+          href="../process/solicitar.php?id=<?php echo $User['idUsuario']?>"
+          class="amigo-solicitacao">
+          Solicitar amizade
+        </a>       
       </div>
-      <div class="feed"></div>
+
+      <div class="feed">
+        
+      </div>
+
       <div class="friend-sugestions">
         <div class="friend">
           <h2>Amigos</h2>
           <div class="display">
           <?php 
-
-            $userId = $User['idUsuario'];
-
+            
             $friends = $connection -> query("SELECT DISTINCT Usuario.FotoUsuario,
             Usuario.Nome, Usuario.idUsuario FROM Usuario join Amizade on 
             Usuario.idUsuario = Amizade.idAmigoUm or 
             Usuario.idUsuario = Amizade.idAmigoDois Where 
-            (Amizade.idAmigoUm = '$userId' 
-            or Amizade.idAmigoDois = '$userId') and Usuario.idUsuario != '$userId'") 
+            (Amizade.idAmigoUm = '$id' 
+            or Amizade.idAmigoDois = '$id') and Usuario.idUsuario != '$id'") 
 
           ?>
           <?php while($friend = $friends -> fetch_assoc()): ?>
@@ -95,5 +103,6 @@
       </div>
     </div>
     
+    <script src="./script/script.js"></script>
   </body>
 </html>
