@@ -281,26 +281,35 @@ session_start();
         <div class="friend">
           <h2>Amigos</h2>
           <div class="display">
-
-          <?php $friends = friendsList($userId, $connection); ?>
-
-          <?php while($friend = $friends -> fetch_assoc()): ?>
-            
-            <article>
-              <img src="<?php echo $friend['FotoUsuario'] ?>" alt="foto_perfil">
+            <?php $friends = friendsList($userId, $connection); ?>
+            <?php while($friend = $friends -> fetch_assoc()): ?>
+              
               <a href="./amigo/?id=<?php echo $friend['idUsuario'] ?>">
-                <strong><?php echo $friend['Nome'] ?></strong>
-              </a> 
-            </article>
+                <img src="<?php echo $friend['FotoUsuario'] ?>" alt="foto_perfil">                
+                <strong><?php echo $friend['Nome'] ?></strong>                
+              </a>
 
-          <?php endwhile ?>
+            <?php endwhile ?>
           </div>
           
         </div>
+
         <div class="sugestions">
           <h2>Sugestões</h2>
+          <div class="display">
+            <?php $Sugestions = sugestionList($userId, $connection); ?>
+            <?php while($sugestion = $Sugestions -> fetch_assoc()): ?>
+              
+              <a href="./titulo=<?php echo $sugestion['idImdb'] ?>">
+                <img src="<?php echo $sugestion['Poster'] ?>" alt="foto_perfil">                
+                <strong><?php echo $sugestion['Titulo'] ?></strong>                
+              </a>
+
+            <?php endwhile ?>
+          </div>
         </div>
       </div>
+
     </div>
     
     <script src="./script/script.js"></script>

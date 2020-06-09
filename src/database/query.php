@@ -76,6 +76,27 @@
     return $result;
   }
 
+  function sugestionList($idUsuario, $connection){
+
+    $result = $connection -> query(
+      "SELECT DISTINCT Titulo.Titulo, Titulo.Poster, Titulo.idImdb 
+      FROM Usuario JOIN Assistido Join Titulo
+      WHERE Assistido.idUsuario IN (
+        SELECT DISTINCT idUsuario FROM Assistido 
+        WHERE Gostou ='1' AND idTitulo IN (
+          SELECT idTitulo FROM Assistido 
+          WHERE Gostou ='1' AND idUsuario = '$idUsuario'
+        ) AND idUsuario != '$idUsuario'
+      ) AND Titulo.idTitulo = Assistido.idTitulo
+      AND Titulo.idTitulo NOT IN (
+        SELECT idTitulo FROM Assistido
+        WHERE idUsuario = '$idUsuario'
+      ) LIMIT 20"
+    );
+
+    return $result;
+  }
+
 
 
   

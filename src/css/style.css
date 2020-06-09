@@ -1,6 +1,8 @@
 body{
   height: 100vh;
+  min-height: 600px;
   width: 100vw;
+  min-width: 900px;
 }
 
 .app{
@@ -201,7 +203,6 @@ body{
 /*user search*/
 .feed{
   height: 100%;
-  border-right: 1px solid #dadada;
   overflow-y: scroll;
   padding: 50px;
 }
@@ -543,7 +544,6 @@ body{
 
 .friend-sugestions{
   height: 100%;
-  border-left: 1px solid #dadada;
 }
 
 .friend-sugestions .friend, 
@@ -572,32 +572,51 @@ body{
 
 .friend-sugestions .friend .display, 
 .friend-sugestions .sugestions .display{
-  height: 100%;
+  height: 250px;
   width: 100%;
   padding: 10px;
   overflow-y: scroll;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   column-gap: 15px;
-  row-gap: 15px;
+  row-gap: 20px;
 }
 
-.friend-sugestions .friend .display article{
+.friend-sugestions .friend .display a,
+.friend-sugestions .sugestions .display a{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: fit-content;
 }
 
-.friend-sugestions .friend .display article img{
+.friend-sugestions .friend .display a img{
   height: 80px;
   width: 80px;
   object-fit: cover;
   border-radius: 50%;
+  margin-bottom: 10px;
 }
 
-.friend-sugestions .friend .display article a strong{
+.friend-sugestions .sugestions .display a img{
+  height: 100px;
+  width: 80px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.friend-sugestions .friend .display a strong{
   color: #353b48;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 600;
+  text-align: center;
+}
+
+.friend-sugestions .sugestions .display a strong{
+  color: #353b48;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
 }
