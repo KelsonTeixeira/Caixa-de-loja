@@ -9,7 +9,7 @@
   idSolicitado) VALUES ('$User', '$idSolicitado')");
 
   if($status){
-    header('location: ../../');
+    header('location: ../');
   }else{
     echo "algo deu errado!";
   }

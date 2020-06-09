@@ -101,7 +101,7 @@ session_start();
                     <strong><?php echo $usuario['Nome'] ?></strong>
                   </a>
                   <a 
-                    href="./process/solicitar.php/?id=<?php echo $usuario['idUsuario'] ?>"
+                    href="./process/solicitar.php?id=<?php echo $usuario['idUsuario'] ?>"
                     class="solicita">
                     Solicitar Amizade
                   </a>
