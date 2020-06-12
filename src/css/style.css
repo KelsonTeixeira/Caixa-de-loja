@@ -470,6 +470,19 @@ body{
 
 /*    Friend Opinion    */
 
+.feed .all-opinions h3{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 50px 0;
+  color: #353b48;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px; 
+  text-align: justify;
+}
+
 .feed .friend-opinion{
   height: fit-content;
   width: 100%;
@@ -568,6 +581,24 @@ body{
   font-size: 20px;
   font-weight: 600;
   letter-spacing: 1px; 
+}
+
+.friend-sugestions .friend h3, 
+.friend-sugestions .sugestions h3{
+  position: absolute;
+  left: 0;
+  top: 60px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  color: #353b48;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px; 
+  text-align: justify;
 }
 
 .friend-sugestions .friend .display, 

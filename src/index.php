@@ -101,7 +101,7 @@ session_start();
                     <strong><?php echo $usuario['Nome'] ?></strong>
                   </a>
                   <a 
-                    href="./process/solicitar.php?id=<?php echo $usuario['idUsuario'] ?>"
+                    href="./process/solicitar.php?id=<?php echo $usuario['idUsuario'] ?>&search=<?php echo $search ?>"
                     class="solicita">
                     Solicitar Amizade
                   </a>
@@ -211,6 +211,12 @@ session_start();
               $idUsuario = $_SESSION['User']['idUsuario'];
               $myOpinions = myOpinions($idUsuario, $connection);
             ?>
+            <?php if(!$myOpinions->num_rows): ?>
+              <h3>
+                Não encontramos nada! Comece a marcar títulos como assistidos e
+                dar suas opiniões, isso ajudda você e a comunidade.
+              </h3>
+            <?php endif ?>
             <?php while($myOpinion = $myOpinions->fetch_assoc()): ?>
               <div class="user-opinion">
                 <img src="<?php echo $myOpinion['Poster'] ?>" alt="poster">
@@ -239,6 +245,11 @@ session_start();
               $idUsuario = $_SESSION['User']['idUsuario'];
               $friendsOpinions = friendsOpinions($idUsuario, $connection);
             ?>
+            <?php if(!$friendsOpinions->num_rows): ?>
+              <h3>
+                Não encontramos nada! Acho que seus amigos estão muito calados...
+              </h3>
+            <?php endif ?>
             <?php while($friendOpinion = $friendsOpinions->fetch_assoc()): ?>
               <div class="friend-opinion">
                 <img 
@@ -282,6 +293,12 @@ session_start();
           <h2>Amigos</h2>
           <div class="display">
             <?php $friends = friendsList($userId, $connection); ?>
+            <?php if(!$friends->num_rows): ?>
+              <h3>
+                Nenhum amigo adicionado ainda, comece a fazer novas amizades.
+                Procure por outros usuários na barra de busca.
+              </h3>
+            <?php endif ?>
             <?php while($friend = $friends -> fetch_assoc()): ?>
               
               <a href="./amigo/?id=<?php echo $friend['idUsuario'] ?>">
@@ -298,6 +315,12 @@ session_start();
           <h2>Sugestões</h2>
           <div class="display">
             <?php $Sugestions = sugestionList($userId, $connection); ?>
+            <?php if(!$Sugestions->num_rows): ?>
+              <h3>
+                Ainda não encontramos títulos para você, marcar mais 
+                titulo como assistidos pode ajudar!
+              </h3>
+            <?php endif ?>
             <?php while($sugestion = $Sugestions -> fetch_assoc()): ?>
               
               <a href="./titulo=<?php echo $sugestion['idImdb'] ?>">
@@ -313,5 +336,6 @@ session_start();
     </div>
     
     <script src="./script/script.js"></script>
+    <?php include './process/alert.php' ?>
   </body>
 </html>

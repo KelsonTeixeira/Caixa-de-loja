@@ -61,7 +61,7 @@
         <h1><?php echo $User['Nome'] ?></h1>
         <h2><?php echo $User['Username'] ?></h2> 
         <a 
-          href="../process/solicitar.php?id=<?php echo $User['idUsuario']?>"
+          href="../process/solicitar.php?id=<?php echo $User['idUsuario']?>&amigo=true"
           class="amigo-solicitacao">
           Solicitar amizade
         </a>       
@@ -101,17 +101,21 @@
         <div class="friend">
           <h2>Amigos</h2>
           <div class="display">
-          <?php $friends = friendsList($id, $connection) ?>
-          <?php while($friend = $friends -> fetch_assoc()): ?>
-            
-            <article>
-              <img src="<?php echo $friend['FotoUsuario'] ?>" alt="foto_perfil">
-              <a href="./?id=<?php echo $friend['idUsuario'] ?>">
-                <strong><?php echo $friend['Nome'] ?></strong>
-              </a> 
-            </article>
+            <?php $friends = friendsList($id, $connection); ?>
+            <?php if(!$friends->num_rows): ?>
+              <h3>
+                Essa pessoa ainda não adicionou nenhum amigo, que tal enviar uma
+                uma solicitação de amizade?
+              </h3>
+            <?php endif ?>
+            <?php while($friend = $friends -> fetch_assoc()): ?>
+              
+              <a href="./amigo/?id=<?php echo $friend['idUsuario'] ?>">
+                <img src="<?php echo $friend['FotoUsuario'] ?>" alt="foto_perfil">                
+                <strong><?php echo $friend['Nome'] ?></strong>                
+              </a>
 
-          <?php endwhile ?>
+            <?php endwhile ?>
           </div>
           
         </div>
@@ -122,5 +126,6 @@
     </div>
     
     <script src="./script/script.js"></script>
+    <?php include '../process/alert.php' ?>
   </body>
 </html>
